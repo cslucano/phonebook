@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
+use UserBundle\Entity\User;
 
 /**
  * Contact
@@ -52,6 +53,10 @@ class Contact
      */
     private $created;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
+     */
+    private $user;
 
     /**
      * Get id
@@ -140,5 +145,28 @@ class Contact
     public function getCreated()
     {
         return $this->created;
+    }
+
+    /**
+     * Set user
+     *
+     * @param User $user
+     * @return Contact
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return User
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }

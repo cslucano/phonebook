@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Knp\Component\Pager\Paginator;
+use UserBundle\Entity\User;
 
 /**
  * ContactRepository
@@ -14,7 +15,7 @@ use Knp\Component\Pager\Paginator;
  */
 class ContactRepository extends EntityRepository
 {
-    public function contactSearch(Paginator $paginator, $queryString, $page=1, $limit=8)
+public function contactSearch(User $user, Paginator $paginator, $queryString, $page=1, $limit=8)
     {
         /** @var QueryBuilder $qb */
         $qb = $this->createQueryBuilder('c');
@@ -25,14 +26,26 @@ class ContactRepository extends EntityRepository
 
                 $qb
                     ->where(
-                        $qb->expr()->orX(
-                            $qb->expr()->like('c.name', ':queryString'),
-                            $qb->expr()->like('c.phoneNumber', ':queryString'),
-                            $qb->expr()->like('c.notes', ':queryString')
+                        $qb->expr()->andX(
+                            $qb->expr()->eq('c.user', ':user'),
+                            $qb->expr()->orX(
+                                $qb->expr()->like('c.name', ':queryString'),
+                                $qb->expr()->like('c.phoneNumber', ':queryString'),
+                                $qb->expr()->like('c.notes', ':queryString')
+                            )
                         )
                     )
-                    ->setParameter('queryString', $q);
+                    ->setParameter('user', $user)
+                    ->setParameter('queryString', $q)
+                ;
             }
+        } else {
+            $qb
+                ->where(
+                        $qb->expr()->eq('c.user', ':user')
+                )
+                ->setParameter('user', $user)
+            ;
         }
 
         $contacts = $paginator->paginate(

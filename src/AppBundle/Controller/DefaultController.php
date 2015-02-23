@@ -9,6 +9,7 @@ use AppBundle\Form\ContactType;
 use Knp\Component\Pager\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,6 +27,7 @@ class DefaultController extends Controller
 
     /**
      * @Route("/dashboard", name="dashboard")
+     * @Security("is_fully_authenticated()")
      * @param Request $request
      *
      * @return Response
@@ -48,7 +50,9 @@ class DefaultController extends Controller
         $paginator = $this->get('knp_paginator');
         $page = $request->query->get('page', 1);
 
-        $contacts = $em->getRepository('AppBundle:Contact')->contactSearch($paginator, $q, $page, 2);
+        $user = $this->getUser();
+
+        $contacts = $em->getRepository('AppBundle:Contact')->contactSearch($user, $paginator, $q, $page, 2);
 
         return $this->render(
             'default/dashboard.html.twig',
@@ -81,6 +85,7 @@ class DefaultController extends Controller
 
     /**
      * Creates a new Contact entity.
+     * @Security("is_fully_authenticated()")
      *
      * @Route("/contact", name="contact_create")
      * @Method("POST")
@@ -93,6 +98,8 @@ class DefaultController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+
+            $contact->setUser($this->getUser());
             $em->persist($contact);
             $em->flush();
 
@@ -129,6 +136,7 @@ class DefaultController extends Controller
 
     /**
      * Displays a form to create a new Contact entity.
+     * @Security("is_fully_authenticated()")
      *
      * @Route("/contact/new", name="contact_new")
      * @Method("GET")
@@ -149,6 +157,7 @@ class DefaultController extends Controller
 
     /**
      * Displays a form to edit an existing Contact entity.
+     * @Security("is_fully_authenticated()")
      *
      * @Route("/contact/{id}/edit", name="contact_edit")
      * @Method("GET")
@@ -161,6 +170,11 @@ class DefaultController extends Controller
 
         if (!$contact) {
             throw $this->createNotFoundException('Unable to find Contact entity.');
+        }
+
+        if($contact->getUser() !== $this->getUser() )
+        {
+            throw $this->createAccessDeniedException('Access Denied Exception');
         }
 
         $form = $this->createEditForm($contact);
@@ -195,6 +209,7 @@ class DefaultController extends Controller
     }
     /**
      * Edits an existing Contact entity.
+     * @Security("is_fully_authenticated()")
      *
      * @Route("/contact/{id}", name="contact_update")
      * @Method("PUT")
@@ -207,6 +222,11 @@ class DefaultController extends Controller
 
         if (!$contact) {
             throw $this->createNotFoundException('Unable to find Contact entity.');
+        }
+
+        if($contact->getUser() !== $this->getUser() )
+        {
+            throw $this->createAccessDeniedException('Access Denied Exception');
         }
 
         $editForm = $this->createEditForm($contact);
@@ -229,6 +249,7 @@ class DefaultController extends Controller
 
     /**
      * Deletes a Contact entity.
+     * @Security("is_fully_authenticated()")
      *
      * @Route("/contact/{id}/delete", name="contact_delete")
      * @Method("GET")
@@ -242,6 +263,11 @@ class DefaultController extends Controller
 
         if (!$contact) {
             throw $this->createNotFoundException('Unable to find Contact entity.');
+        }
+
+        if($contact->getUser() !== $this->getUser() )
+        {
+            throw $this->createAccessDeniedException('Access Denied Exception');
         }
 
         $em->remove($contact);
