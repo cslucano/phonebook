@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -31,16 +32,25 @@ class Contact
     /**
      * @var string
      *
-     * @ORM\Column(name="phone_number", type="string", length=255)
+     * @ORM\Column(name="phone_number", type="string", nullable=true, length=255)
      */
     private $phoneNumber;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="notes", type="text")
+     * @ORM\Column(name="notes", type="text", nullable=true)
      */
     private $notes;
+
+
+    /**
+     * @var \DateTime $created
+     *
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime")
+     */
+    private $created;
 
 
     /**
@@ -120,5 +130,15 @@ class Contact
     public function getNotes()
     {
         return $this->notes;
+    }
+
+    /**
+     * Get created
+     *
+     * @return \DateTime
+     */
+    public function getCreated()
+    {
+        return $this->created;
     }
 }

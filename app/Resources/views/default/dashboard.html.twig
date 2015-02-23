@@ -38,7 +38,11 @@
                             <div class="panel panel-default">
                                 <div class="panel-heading">{{ contact.name }}</div>
                                 <div class="panel-body">
-                                    {{ contact.phonenumber }}
+                                    <p><strong>{{ contact.phonenumber }}</strong></p>
+                                    <h4>Created</h4>
+                                    <p>{{ contact.created|date }}</p>
+                                    <h4>Notes</h4>
+                                    <p style="height:40px; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;" >{{ contact.notes }}</p>
                                 </div>
                                 <div class="panel-footer">
                                     <a href="{{ path('contact_edit', { 'id': contact.id }) }}" class="btn">Edit</a>
