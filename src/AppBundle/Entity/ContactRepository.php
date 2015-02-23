@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * ContactRepository
@@ -12,4 +13,28 @@ use Doctrine\ORM\EntityRepository;
  */
 class ContactRepository extends EntityRepository
 {
+    public function contactSearch($queryString)
+    {
+        if(empty($queryString)) {
+            return $this->findAll();
+        }
+
+        $q = sprintf('%%%s%%', $queryString);
+
+        /** @var QueryBuilder $qb */
+        $qb = $this->createQueryBuilder('c');
+
+        $query = $qb
+            ->where(
+                $qb->expr()->orX(
+                    $qb->expr()->like('c.name', ':queryString'),
+                    $qb->expr()->like('c.phoneNumber', ':queryString'),
+                    $qb->expr()->like('c.notes', ':queryString')
+                )
+            )
+            ->setParameter('queryString', $q)
+            ->getQuery();
+
+        return $query->getResult();
+    }
 }

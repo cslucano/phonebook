@@ -2,12 +2,16 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\BasicSearch;
 use AppBundle\Entity\Contact;
+use AppBundle\Form\BasicSearchType;
 use AppBundle\Form\ContactType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller
 {
@@ -21,20 +25,54 @@ class DefaultController extends Controller
 
     /**
      * @Route("/dashboard", name="dashboard")
+     * @param Request $request
+     *
+     * @return Response
      */
-    public function dashboardAction()
+    public function dashboardAction(Request $request)
     {
+        $basicSearch = new BasicSearch();
+        $form = $this->createBasicSearchForm($basicSearch);
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $q = $form->get('queryString')->getData();
+        } else {
+            $q = '';
+        }
+
         $em = $this->getDoctrine()->getManager();
 
-        $contacts = $em->getRepository('AppBundle:Contact')->findAll();
+        $contacts = $em->getRepository('AppBundle:Contact')->contactSearch($q);
 
         return $this->render(
             'default/dashboard.html.twig',
             [
                 'contacts' => $contacts,
+                'form' => $form->createView(),
             ]
         );
     }
+
+    /**
+     * Creates a form for a Basic Search.
+     *
+     * @param BasicSearch $basicSearch The entity
+     *
+     * @return Form The form
+     */
+    private function createBasicSearchForm(BasicSearch $basicSearch)
+    {
+        $form = $this->createForm(new BasicSearchType(), $basicSearch, array(
+            'action' => $this->generateUrl('dashboard'),
+            'method' => 'GET',
+        ));
+
+        $form->add('submit', 'submit', array('label' => 'Search'));
+
+        return $form;
+    }
+
 
     /**
      * Creates a new Contact entity.
@@ -70,7 +108,7 @@ class DefaultController extends Controller
      *
      * @param Contact $entity The entity
      *
-     * @return \Symfony\Component\Form\Form The form
+     * @return Form The form
      */
     private function createCreateForm(Contact $entity)
     {

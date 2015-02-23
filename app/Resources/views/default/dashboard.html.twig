@@ -14,12 +14,15 @@
                 <div data-spy="affix" data-offset-top="60" data-offset-bottom="200">
                     <ul class="nav nav-pills nav-stacked">
                         <a href="{{ path('contact_new') }}" class="btn btn-success navbar-btn form-control">Agregar</a>
-                        <form class="navbar-form navbar-left" role="search">
+
+                        <form class="navbar-form navbar-left" role="search" >
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Search">
+                                {{ form_widget(form.queryString, {'attr': {'class': 'form-control', 'placeholder': 'Search'}}) }}
                             </div>
-                            <button type="submit" class="btn btn-success form-control">Buscar</button>
+                            {{ form_widget(form.submit, {'attr': {'class': 'btn btn-success form-control'}}) }}
+                            {{ form_rest(form) }}
                         </form>
+
                     </ul>
                 </div>
             </div>
