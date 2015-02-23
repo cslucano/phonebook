@@ -6,6 +6,7 @@ use AppBundle\Entity\BasicSearch;
 use AppBundle\Entity\Contact;
 use AppBundle\Form\BasicSearchType;
 use AppBundle\Form\ContactType;
+use Knp\Component\Pager\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -43,7 +44,11 @@ class DefaultController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        $contacts = $em->getRepository('AppBundle:Contact')->contactSearch($q);
+        /** @var Paginator $paginator */
+        $paginator = $this->get('knp_paginator');
+        $page = $request->query->get('page', 1);
+
+        $contacts = $em->getRepository('AppBundle:Contact')->contactSearch($paginator, $q, $page, 2);
 
         return $this->render(
             'default/dashboard.html.twig',

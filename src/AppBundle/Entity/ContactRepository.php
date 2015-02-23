@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Knp\Component\Pager\Paginator;
 
 /**
  * ContactRepository
@@ -13,28 +14,33 @@ use Doctrine\ORM\QueryBuilder;
  */
 class ContactRepository extends EntityRepository
 {
-    public function contactSearch($queryString)
+    public function contactSearch(Paginator $paginator, $queryString, $page=1, $limit=8)
     {
-        if(empty($queryString)) {
-            return $this->findAll();
-        }
-
-        $q = sprintf('%%%s%%', $queryString);
-
         /** @var QueryBuilder $qb */
         $qb = $this->createQueryBuilder('c');
 
-        $query = $qb
-            ->where(
-                $qb->expr()->orX(
-                    $qb->expr()->like('c.name', ':queryString'),
-                    $qb->expr()->like('c.phoneNumber', ':queryString'),
-                    $qb->expr()->like('c.notes', ':queryString')
-                )
-            )
-            ->setParameter('queryString', $q)
-            ->getQuery();
+        if(!empty($queryString)) {
+            {
+                $q = sprintf('%%%s%%', $queryString);
 
-        return $query->getResult();
+                $qb
+                    ->where(
+                        $qb->expr()->orX(
+                            $qb->expr()->like('c.name', ':queryString'),
+                            $qb->expr()->like('c.phoneNumber', ':queryString'),
+                            $qb->expr()->like('c.notes', ':queryString')
+                        )
+                    )
+                    ->setParameter('queryString', $q);
+            }
+        }
+
+        $contacts = $paginator->paginate(
+            $qb,
+            $page,
+            $limit
+        );
+
+        return $contacts;
     }
 }

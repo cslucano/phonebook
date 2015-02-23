@@ -27,6 +27,11 @@
                 </div>
             </div>
             <div class="col-md-9">
+                {% if contacts is empty  %}
+                    <div class="alert alert-success" role="alert">
+                        No Contacts
+                    </div>
+                {% endif %}
                 <div class="row">
                     {% for contact in contacts %}
                         <div class="col-md-4">
@@ -46,8 +51,12 @@
                         </div>
                     {% endfor %}
                 </div>
+                <div class="row">
+                    <div class="navigation">
+                        {{ knp_pagination_render(contacts) }}
+                    </div>
+                </div>
             </div>
-        </div>
         <hr>
 
         <footer>
