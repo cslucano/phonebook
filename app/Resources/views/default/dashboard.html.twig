@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+        <div class="container">
+            <h1>Your Contacts</h1>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <div data-spy="affix" data-offset-top="60" data-offset-bottom="200">
+                    <ul class="nav nav-pills nav-stacked">
+                        <a href="{{ path('contact_new') }}" class="btn btn-success navbar-btn form-control">Agregar</a>
+                        <form class="navbar-form navbar-left" role="search">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Search">
+                            </div>
+                            <button type="submit" class="btn btn-success form-control">Buscar</button>
+                        </form>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="row">
+                    {% for contact in contacts %}
+                        <div class="col-md-4">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">{{ contact.name }}</div>
+                                <div class="panel-body">
+                                    {{ contact.phonenumber }}
+                                </div>
+                                <div class="panel-footer">
+                                    <a href="{{ path('contact_edit', { 'id': contact.id }) }}" class="btn">Edit</a>
+                                    <a href="{{ path('contact_delete', { 'id': contact.id }) }}" class="btn">Delete</a>
+                                </div>
+                            </div>
+
+                            <br>
+
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <hr>
+
+        <footer>
+            <p>&copy; Carlos Salvatierra @cslucano</p>
+        </footer>
+    </div> <!-- /container -->
+{% endblock %}

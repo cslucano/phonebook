@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+        <div class="container">
+            <h1>Add a new contact</h1>
+        </div>
+    </div>
+
+    <div class="container">
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+        <div class="row">
+            <div class="col-sm-3">
+                <label>Name</label>
+            </div>
+            <div class="col-sm-4">
+                {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.name) }}
+            </div>
+            <div class="col-sm-5">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <label>Phone Number</label>
+            </div>
+            <div class="col-sm-4">
+                {{ form_widget(form.phoneNumber, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.phoneNumber) }}
+            </div>
+            <div class="col-sm-5">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <label>Notes</label>
+            </div>
+            <div class="col-sm-4">
+                {{ form_widget(form.notes, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.notes) }}
+            </div>
+            <div class="col-sm-5">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                {{ form_rest(form) }}
+            </div>
+        </div>
+        {{ form_end(form) }}
+        <hr>
+
+        <footer>
+            <p>&copy; Carlos Salvatierra @cslucano</p>
+        </footer>
+    </div> <!-- /container -->
+{% endblock %}
