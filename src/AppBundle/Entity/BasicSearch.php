@@ -28,11 +28,10 @@ class BasicSearch
      */
     private $queryString;
 
-
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -42,7 +41,7 @@ class BasicSearch
     /**
      * Set queryString
      *
-     * @param string $queryString
+     * @param  string      $queryString
      * @return BasicSearch
      */
     public function setQueryString($queryString)
@@ -55,7 +54,7 @@ class BasicSearch
     /**
      * Get queryString
      *
-     * @return string 
+     * @return string
      */
     public function getQueryString()
     {

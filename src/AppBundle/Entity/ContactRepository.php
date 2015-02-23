@@ -15,12 +15,12 @@ use UserBundle\Entity\User;
  */
 class ContactRepository extends EntityRepository
 {
-public function contactSearch(User $user, Paginator $paginator, $queryString, $page=1, $limit=8)
+    public function contactSearch(User $user, Paginator $paginator, $queryString, $page = 1, $limit = 8)
     {
         /** @var QueryBuilder $qb */
         $qb = $this->createQueryBuilder('c');
 
-        if(!empty($queryString)) {
+        if (!empty($queryString)) {
             {
                 $q = sprintf('%%%s%%', $queryString);
 

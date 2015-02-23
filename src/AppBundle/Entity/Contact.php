@@ -44,7 +44,6 @@ class Contact
      */
     private $notes;
 
-
     /**
      * @var \DateTime $created
      *
@@ -61,7 +60,7 @@ class Contact
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -71,7 +70,7 @@ class Contact
     /**
      * Set name
      *
-     * @param string $name
+     * @param  string  $name
      * @return Contact
      */
     public function setName($name)
@@ -84,7 +83,7 @@ class Contact
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -94,7 +93,7 @@ class Contact
     /**
      * Set phoneNumber
      *
-     * @param string $phoneNumber
+     * @param  string  $phoneNumber
      * @return Contact
      */
     public function setPhoneNumber($phoneNumber)
@@ -107,7 +106,7 @@ class Contact
     /**
      * Get phoneNumber
      *
-     * @return string 
+     * @return string
      */
     public function getPhoneNumber()
     {
@@ -117,7 +116,7 @@ class Contact
     /**
      * Set notes
      *
-     * @param string $notes
+     * @param  string  $notes
      * @return Contact
      */
     public function setNotes($notes)
@@ -130,7 +129,7 @@ class Contact
     /**
      * Get notes
      *
-     * @return string 
+     * @return string
      */
     public function getNotes()
     {
@@ -150,7 +149,7 @@ class Contact
     /**
      * Set user
      *
-     * @param User $user
+     * @param  User    $user
      * @return Contact
      */
     public function setUser($user)

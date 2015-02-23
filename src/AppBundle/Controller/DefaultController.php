@@ -82,7 +82,6 @@ class DefaultController extends Controller
         return $form;
     }
 
-
     /**
      * Creates a new Contact entity.
      * @Security("is_fully_authenticated()")
@@ -172,13 +171,11 @@ class DefaultController extends Controller
             throw $this->createNotFoundException('Unable to find Contact entity.');
         }
 
-        if($contact->getUser() !== $this->getUser() )
-        {
+        if ($contact->getUser() !== $this->getUser()) {
             throw $this->createAccessDeniedException('Access Denied Exception');
         }
 
         $form = $this->createEditForm($contact);
-
 
         return $this->render(
             'default/contact_edit.html.twig',
@@ -224,8 +221,7 @@ class DefaultController extends Controller
             throw $this->createNotFoundException('Unable to find Contact entity.');
         }
 
-        if($contact->getUser() !== $this->getUser() )
-        {
+        if ($contact->getUser() !== $this->getUser()) {
             throw $this->createAccessDeniedException('Access Denied Exception');
         }
 
@@ -256,7 +252,6 @@ class DefaultController extends Controller
      */
     public function deleteAction($id)
     {
-
         $em = $this->getDoctrine()->getManager();
 
         $contact = $em->getRepository('AppBundle:Contact')->find($id);
@@ -265,8 +260,7 @@ class DefaultController extends Controller
             throw $this->createNotFoundException('Unable to find Contact entity.');
         }
 
-        if($contact->getUser() !== $this->getUser() )
-        {
+        if ($contact->getUser() !== $this->getUser()) {
             throw $this->createAccessDeniedException('Access Denied Exception');
         }
 

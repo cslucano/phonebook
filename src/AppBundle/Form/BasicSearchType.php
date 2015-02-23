@@ -10,7 +10,7 @@ class BasicSearchType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -18,14 +18,14 @@ class BasicSearchType extends AbstractType
             ->add('queryString')
         ;
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\BasicSearch'
+            'data_class' => 'AppBundle\Entity\BasicSearch',
         ));
     }
 
