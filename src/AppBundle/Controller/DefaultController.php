@@ -6,6 +6,7 @@ use AppBundle\Entity\BasicSearch;
 use AppBundle\Entity\Contact;
 use AppBundle\Form\BasicSearchType;
 use AppBundle\Form\ContactType;
+use AppBundle\Phonebook\ContactService;
 use Knp\Component\Pager\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -96,11 +97,10 @@ class DefaultController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
 
-            $contact->setUser($this->getUser());
-            $em->persist($contact);
-            $em->flush();
+            /** @var ContactService $contactService */
+            $contactService = $this->get('phonebook.contact_service');
+            $contactService->createContact($contact);
 
             return $this->redirect($this->generateUrl('dashboard'));
         }

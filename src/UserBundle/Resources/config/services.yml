@@ -2,3 +2,14 @@ services:
 #    user.example:
 #        class: UserBundle\Example
 #        arguments: [@service_id, "plain_value", %parameter%]
+
+    phonebook.contact_repository:
+        class: Doctrine\ORM\EntityRepository
+        factory_service: doctrine.orm.default_entity_manager
+        factory_method: getRepository
+        arguments:
+            - AppBundle\Entity\Contact
+
+    phonebook.contact_service:
+        class: AppBundle\Phonebook\ContactService
+        arguments: [@security.context, @doctrine.orm.default_entity_manager, @phonebook.contact_repository]
